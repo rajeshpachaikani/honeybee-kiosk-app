@@ -3,7 +3,7 @@ name: 'build-aarch64-appimage'
 on:
   push:
     branches: 
-      - release
+      - main
 
 jobs:
   build-linux-aarch64:
