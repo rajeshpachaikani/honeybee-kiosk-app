@@ -7,24 +7,32 @@ on:
 
 jobs:
   build-linux-aarch64:
-    runs-on: ubuntu-22.04-arm  # Critical:  Use ARM runner for native aarch64 build
+    runs-on: ubuntu-22.04-arm
     permissions:
       contents: write
     
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup node
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node (for Tauri)
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
+      - name: Install dependencies
+        run: bun install
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: aarch64-unknown-linux-gnu
 
-      - name: install dependencies (ubuntu aarch64)
+      - name:  install dependencies (ubuntu aarch64)
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -32,9 +40,6 @@ jobs:
             libappindicator3-dev \
             librsvg2-dev \
             patchelf
-
-      - name: install frontend dependencies
-        run: npm install  # or yarn/pnpm depending on your setup
 
       - uses: tauri-apps/tauri-action@v0
         env:
