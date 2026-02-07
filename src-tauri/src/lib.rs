@@ -1,6 +1,8 @@
 mod camera;
 mod commands;
+mod gallery;
 mod provisioning_ipc;
+mod recorder;
 mod system;
 mod voice_agent_ipc;
 
@@ -9,7 +11,9 @@ use tauri::Manager;
 
 use camera::{capture_photo, start_camera_stream, stop_camera_stream};
 use commands::{check_wifi_status, get_qr_code_image, start_qr_file_watcher, trigger_provisioning_retry};
+use gallery::{delete_gallery_image, list_gallery_images, read_gallery_image};
 use provisioning_ipc::{check_provisioning_socket, start_provisioning_ipc_listener};
+use recorder::{delete_recording, is_recording, list_recordings, read_audio_file, start_recording, stop_recording};
 use system::{get_brightness, set_brightness, get_volume, set_volume};
 use voice_agent_ipc::{check_voice_agent_socket, start_voice_agent_ipc_listener};
 
@@ -34,7 +38,18 @@ pub fn run() {
             // Camera commands
             start_camera_stream,
             stop_camera_stream,
-            capture_photo
+            capture_photo,
+            // Gallery commands
+            list_gallery_images,
+            read_gallery_image,
+            delete_gallery_image,
+            // Recorder commands
+            start_recording,
+            stop_recording,
+            list_recordings,
+            read_audio_file,
+            delete_recording,
+            is_recording
         ])
         .setup(|app| {
             // Open devtools only in debug builds

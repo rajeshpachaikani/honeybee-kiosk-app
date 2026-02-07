@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   CloudSun,
   Camera,
+  Image as ImageIcon,
   Mic,
   Music,
   Settings,
@@ -11,6 +12,9 @@ import {
 import { cn } from "@/lib/utils";
 import "./MiniAppsPage.css";
 import { CameraApp } from "./camera/CameraApp";
+import { GalleryApp } from "./gallery/GalleryApp";
+import { RecorderApp } from "./recorder/RecorderApp";
+import { MusicApp } from "./music/MusicApp";
 
 interface MiniApp {
   id: string;
@@ -36,6 +40,13 @@ const miniApps: MiniApp[] = [
     bgColor: "from-rose-500/20 to-rose-600/30",
   },
   {
+    id: "gallery",
+    name: "Gallery",
+    icon: ImageIcon,
+    color: "text-violet-400",
+    bgColor: "from-violet-500/20 to-violet-600/30",
+  },
+  {
     id: "recorder",
     name: "Recorder",
     icon: Mic,
@@ -58,10 +69,10 @@ const miniApps: MiniApp[] = [
   },
 ];
 
-// Arrange apps into honeycomb rows: [2, 3] pattern for tessellation
+// Arrange apps into honeycomb rows: [3, 3] pattern for 6 apps
 const honeycombRows: MiniApp[][] = [
-  [miniApps[0], miniApps[1]],           // Row 1: 2 apps
-  [miniApps[2], miniApps[3], miniApps[4]], // Row 2: 3 apps (offset)
+  [miniApps[0], miniApps[1], miniApps[2]],    // Row 1: weather, camera, gallery
+  [miniApps[3], miniApps[4], miniApps[5]],    // Row 2: recorder, music, settings
 ];
 
 interface MiniAppsPageProps {
@@ -89,10 +100,20 @@ export function MiniAppsPage({ onClose }: MiniAppsPageProps) {
     return <CameraApp onClose={handleCloseApp} />;
   }
 
+  if (openApp === "gallery") {
+    return <GalleryApp onClose={handleCloseApp} />;
+  }
+
+  if (openApp === "recorder") {
+    return <RecorderApp onClose={handleCloseApp} />;
+  }
+
+  if (openApp === "music") {
+    return <MusicApp onClose={handleCloseApp} />;
+  }
+
   // TODO: Add other mini apps here
   // if (openApp === "weather") return <WeatherApp onClose={handleCloseApp} />;
-  // if (openApp === "recorder") return <RecorderApp onClose={handleCloseApp} />;
-  // if (openApp === "music") return <MusicApp onClose={handleCloseApp} />;
   // if (openApp === "settings") return <SettingsApp onClose={handleCloseApp} />;
 
   return (
